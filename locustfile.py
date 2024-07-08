@@ -27,9 +27,8 @@ class WebsiteUser(HttpUser):
 def on_test_start(environment, **kwargs):
     user = WebsiteUser(environment)
     user.log_server_health()
-    environment.runner.quit()  # Adiciona um encerramento do Locust após o log
+    environment.runner.quit()
 
-# To add headers to the CSV initially
 if __name__ == "__main__":
     columns = ["timestamp", "status_code", "response_time", "content_length"]
     df = pd.DataFrame(columns=columns)
