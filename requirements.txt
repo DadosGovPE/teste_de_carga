@@ -18,17 +18,11 @@ Jinja2==3.1.4
 locust==2.29.1
 MarkupSafe==2.1.5
 msgpack==1.0.8
-numpy==2.0.0
-pandas==2.2.2
 psutil==6.0.0
 pycparser==2.22
-python-dateutil==2.9.0.post0
-pytz==2024.1
 pywin32==306
 pyzmq==26.0.3
 requests==2.32.3
-six==1.16.0
-tzdata==2024.1
 urllib3==2.2.2
 Werkzeug==3.0.3
 zope.event==5.0
