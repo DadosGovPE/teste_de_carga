@@ -1,11 +1,15 @@
 import csv
-import uuid
-from locust import HttpUser, task, between, events, run_single_user
-from datetime import datetime
 import os
-import requests
 import sys
+import uuid
+from datetime import datetime
 
+import requests
+from dotenv import dotenv_values
+from locust import HttpUser, between, events, run_single_user, task
+
+ENV = dotenv_values(".env")
+site = ENV["site"]
 
 count_user = sys.argv[5]
 total_requests = 0
@@ -17,7 +21,7 @@ server_up = False
 
 class WebsiteUser(HttpUser):
     wait_time = between(1, 3)
-    host = "https://ouvirparamudar-homologacao.pe.gov.br"
+    host = site
 
     @task
     def index(self):
@@ -35,14 +39,12 @@ def on_test_start(environment, **kwargs):
     global total_requests, total_failures, total_successes, test_start_time, server_up
 
     try:
-        response = requests.get(
-            'https://ouvirparamudar-homologacao.pe.gov.br/')
+        response = requests.get(site)
         if response.status_code == 200:
             server_up = True
             print("Servidor está no ar.")
         else:
-            print(
-                f"Erro ao acessar o servidor. Status Code: {response.status_code}")
+            print(f"Erro ao acessar o servidor. Status Code: {response.status_code}")
     except Exception as e:
         print(f"Erro ao acessar o servidor: {str(e)}")
         server_up = False
@@ -67,18 +69,28 @@ def log_load_test(load_id, test_duration):
     if server_up:
         data = {
             "load_id": load_id,
-            "timestamp": test_start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "timestamp": test_start_time.strftime("%Y-%m-%d %H:%M:%S"),
             "total_requests": total_requests,
             "total_failures": total_failures,
             "total_successes": total_successes,
             "test_duration": test_duration,
-            "stress_category": str(count_user)
+            "stress_category": str(count_user),
         }
-        print('Carga de Teste:', data)
-        file_exists = os.path.exists('load_test_summary.csv')
-        with open('load_test_summary.csv', mode='a', newline='') as file:
-            writer = csv.DictWriter(file, fieldnames=[
-                                    "load_id", "timestamp", "total_requests", "total_failures", "total_successes", "test_duration"])
+        print("Carga de Teste:", data)
+        file_exists = os.path.exists("load_test_summary.csv")
+        with open("load_test_summary.csv", mode="a", newline="") as file:
+            writer = csv.DictWriter(
+                file,
+                fieldnames=[
+                    "load_id",
+                    "timestamp",
+                    "total_requests",
+                    "total_failures",
+                    "total_successes",
+                    "test_duration",
+                    "stress_category",
+                ],
+            )
             if not file_exists:
                 writer.writeheader()
             writer.writerow(data)
