@@ -17,7 +17,7 @@ server_up = False
 
 class WebsiteUser(HttpUser):
     wait_time = between(1, 3)
-    host = "https://ouvirparamudar-homologacao.pe.gov.br"
+    host = "https://homologacao.ouvirparamudar.pe.gov.br/"
 
     @task
     def index(self):
@@ -36,7 +36,7 @@ def on_test_start(environment, **kwargs):
 
     try:
         response = requests.get(
-            'https://ouvirparamudar-homologacao.pe.gov.br/')
+            'https://homologacao.ouvirparamudar.pe.gov.br/')
         if response.status_code == 200:
             server_up = True
             print("Servidor está no ar.")
@@ -78,7 +78,7 @@ def log_load_test(load_id, test_duration):
         file_exists = os.path.exists('load_test_summary.csv')
         with open('load_test_summary.csv', mode='a', newline='') as file:
             writer = csv.DictWriter(file, fieldnames=[
-                                    "load_id", "timestamp", "total_requests", "total_failures", "total_successes", "test_duration"])
+                                    "load_id", "timestamp", "total_requests", "total_failures", "total_successes", "test_duration", "stress_category"])
             if not file_exists:
                 writer.writeheader()
             writer.writerow(data)
