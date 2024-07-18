@@ -1,3 +1,3 @@
-python -m locust -f locustfile.py --headless -u 500 -r 50 --run-time 2m
-python -m locust -f locustfile.py --headless -u 1000 -r 100 --run-time 3m
-python -m locust -f locustfile.py --headless -u 2000 -r 200 --run-time 5m
+python -m locust -f src/locustfile.py --headless -u 500 -r 50 --run-time 2m
+python -m locust -f src/locustfile.py --headless -u 1000 -r 100 --run-time 3m
+python -m locust -f src/locustfile.py --headless -u 2000 -r 200 --run-time 5m
